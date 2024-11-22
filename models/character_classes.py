@@ -1,5 +1,5 @@
-from .base_models import Description, Id, UnieqName
+from .base_models import Description, Id, UniqueName
 
 
-class CharacterClass(Id, UnieqName, Description, table=True):
+class CharacterClass(Id, UniqueName, Description, table=True):
     pass
