@@ -1,8 +1,8 @@
 # Base models
 MAX_LENGTH_NAME = 50
+MIN_VALUE_COUNT = 0
 
 # Spell
-MIN_VALUE_SPELL_CASTING_TIME = 0
 MIN_VALUE_SPELL_RANGE = 0
 
 # SpellLevel

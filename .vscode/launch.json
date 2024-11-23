@@ -8,10 +8,11 @@
             "name": "Python Debugger: FastAPI",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
+            "module": "fastapi",
             "python": "venv\\Scripts\\python.exe",
             "args": [
-                "main:app",
+                "dev",
+                "app\\main.py",
                 "--reload"
             ],
             "jinja": true
