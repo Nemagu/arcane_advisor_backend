@@ -1,13 +1,17 @@
-from sqlmodel import SQLModel, create_engine
+# from app.config import settings
+from sqlalchemy import URL, create_engine, text
+from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
+                                    create_async_engine)
+from sqlalchemy.orm import Session, sessionmaker
 
-sqlite_file_name = 'database.sqlite3'
-sqlite_url = f'sqlite:///{sqlite_file_name}'
+engine = create_engine(
+    # url=settings.DATABASE_URL_asyncpg,
+    url='sqlite+psycopg:///:memory:',
+    echo=True,
+    # pool_size=1,
+    # max_overflow=0,
+)
 
-# connect_args = {'check_same_thread': False}
-# engine = create_engine(sqlite_url, echo=True, connect_args=connect_args)
-
-engine = create_engine(sqlite_url)
-
-
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
+with engine.connect() as conn:
+    res = conn.execute(text('SELECT VERSION()'))
+    print(f'{res=}')

@@ -1,4 +1,3 @@
-import app.models as models
 from fastapi import FastAPI
 
 from .databases.databases import create_db_and_tables
