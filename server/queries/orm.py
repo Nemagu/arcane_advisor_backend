@@ -12,7 +12,17 @@ class AsyncORM:
     @staticmethod
     async def insert_data():
         async with async_session_factory() as conn:
-            spell_1 = Spell(name='spell_1')
-            spell_2 = Spell(name='spell_2')
+            spell_1 = Spell(
+                name='spell_1',
+                range=1,
+                next_level='dasf',
+                description='spell_1',
+            )
+            spell_2 = Spell(
+                name='spell_2',
+                range=1,
+                next_level='dasf',
+                description='spell_2',
+            )
             conn.add_all([spell_1, spell_2])
             await conn.commit()

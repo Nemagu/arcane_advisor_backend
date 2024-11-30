@@ -1,14 +1,27 @@
-from database import Base
+from typing import Optional
+
 from sqlalchemy import CheckConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, declared_attr, mapped_column
+
+from database import Base
+from .mixins import (DescriptionMixin, TimestampMixin,
+                     UniqueNameMaxLength50Mixin)
 
 
-class Spell(Base):
-    __tablename__ = 'spell'
+class Spell(
+    TimestampMixin,
+    UniqueNameMaxLength50Mixin,
+    DescriptionMixin,
+    Base,
+):
+    range: Mapped[int]
+    next_level: Mapped[Optional[str]]
+    ritual: Mapped[bool] = mapped_column(default=False)
+    concetration: Mapped[bool] = mapped_column(default=False)
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-
-    __table_args__ = (
-        CheckConstraint('LENGTH(name) < 60', name='max_length_name'),
-    )
+    @declared_attr
+    def __table_args__(cls):
+        return (
+            *UniqueNameMaxLength50Mixin.__table_args__,
+            CheckConstraint('range > -1', name='min_length_spell_range'),
+        )
