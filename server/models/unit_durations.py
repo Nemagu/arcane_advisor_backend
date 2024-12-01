@@ -7,6 +7,7 @@ from database import Base
 from .mixins import NameUniqueMaxLength50Mixin, TimestampMixin
 
 if TYPE_CHECKING:
+    from .spell_casting_time import SpellCastingTime
     from .spell_durations import SpellDuration
 
 
@@ -16,5 +17,8 @@ class UnitDuration(
     Base,
 ):
     spell_durations: Mapped[list['SpellDuration']] = relationship(
+        back_populates='unit_duration',
+    )
+    spell_casting_times: Mapped[list['SpellCastingTime']] = relationship(
         back_populates='unit_duration',
     )

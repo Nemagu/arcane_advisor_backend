@@ -12,6 +12,7 @@ from .mixins import (
 )
 
 if TYPE_CHECKING:
+    from .spell_casting_time import SpellCastingTime
     from .spell_durations import SpellDuration
 
 
@@ -26,7 +27,10 @@ class Spell(
     ritual: Mapped[bool] = mapped_column(default=False)
     concetration: Mapped[bool] = mapped_column(default=False)
 
-    spell_duration: Mapped['SpellDuration'] = relationship(
+    duration: Mapped['SpellDuration'] = relationship(
+        back_populates='spell',
+    )
+    casting_time: Mapped['SpellCastingTime'] = relationship(
         back_populates='spell',
     )
 

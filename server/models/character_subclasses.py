@@ -1,3 +1,7 @@
+from typing import TYPE_CHECKING
+
+from sqlalchemy.orm import Mapped, relationship
+
 from database import Base
 
 from .mixins import (
@@ -6,6 +10,9 @@ from .mixins import (
     TimestampMixin
 )
 
+if TYPE_CHECKING:
+    from .charcter_class_subclasses import CharacterClassSubclass
+
 
 class CharacterSubclass(
     DescriptionMixin,
@@ -13,4 +20,8 @@ class CharacterSubclass(
     TimestampMixin,
     Base,
 ):
-    pass
+    combination_character_class_subclass: Mapped[
+        'CharacterClassSubclass'
+    ] = relationship(
+        back_populates='character_subclass',
+    )

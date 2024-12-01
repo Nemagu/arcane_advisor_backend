@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from .unit_durations import UnitDuration
 
 
-class SpellDuration(Base):
+class SpellCastingTime(Base):
     count: Mapped[int]
     unit_duration_id: Mapped[int] = mapped_column(
         ForeignKey(
@@ -26,10 +26,10 @@ class SpellDuration(Base):
     )
 
     unit_duration: Mapped['UnitDuration'] = relationship(
-        back_populates='spell_durations',
+        back_populates='spell_casting_times',
     )
     spell: Mapped['Spell'] = relationship(
-        back_populates='duration',
+        back_populates='casting_time',
     )
 
     @declared_attr.directive
@@ -37,11 +37,11 @@ class SpellDuration(Base):
         return (
             CheckConstraint(
                 'count >= 0',
-                name='min_value_spell_duration_count',
+                name='min_value_spell_casting_time_count',
             ),
             UniqueConstraint(
                 'unit_duration_id',
                 'spell_id',
-                name='unique_unit_duration_spell',
+                name='unique_casting_time_spell',
             ),
         )
