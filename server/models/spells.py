@@ -4,14 +4,18 @@ from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import Mapped, declared_attr, mapped_column
 
 from database import Base
-from .mixins import (DescriptionMixin, TimestampMixin,
-                     UniqueNameMaxLength50Mixin)
+
+from .mixins import (
+    DescriptionMixin,
+    NameUniqueMaxLength50Mixin,
+    TimestampMixin
+)
 
 
 class Spell(
-    TimestampMixin,
-    UniqueNameMaxLength50Mixin,
     DescriptionMixin,
+    NameUniqueMaxLength50Mixin,
+    TimestampMixin,
     Base,
 ):
     range: Mapped[int]
@@ -22,6 +26,6 @@ class Spell(
     @declared_attr
     def __table_args__(cls):
         return (
-            *UniqueNameMaxLength50Mixin.__table_args__,
-            CheckConstraint('range > -1', name='min_length_spell_range'),
+            *NameUniqueMaxLength50Mixin.__table_args__,
+            CheckConstraint('range >= 0', name='min_length_spell_range'),
         )
