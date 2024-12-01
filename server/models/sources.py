@@ -14,10 +14,10 @@ if TYPE_CHECKING:
     from .spells import Spell
 
 
-class SpellSchool(
+class Source(
     DescriptionMixin,
     NameUniqueMaxLength50Mixin,
     TimestampMixin,
     Base,
 ):
-    spells: Mapped[list['Spell']] = relationship(back_populates='school')
+    spells: Mapped['Spell'] = relationship(back_populates='source')

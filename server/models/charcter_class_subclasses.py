@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, declared_attr, mapped_column, relationship
@@ -12,25 +12,18 @@ if TYPE_CHECKING:
 
 class CharacterClassSubclass(Base):
     character_class_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            'characterclass.id',
-            ondelete='CASCADE',
-        ),
+        ForeignKey('characterclass.id', ondelete='CASCADE'),
         primary_key=True,
     )
-    character_subclass_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            'charactersubclass.id',
-            ondelete='CASCADE',
-        ),
+    character_subclass_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey('charactersubclass.id', ondelete='CASCADE'),
         primary_key=True,
-        nullable=True,
     )
 
     character_class: Mapped['CharacterClass'] = relationship(
         back_populates='combination_character_class_subclass',
     )
-    character_subclass: Mapped['CharacterSubclass'] = relationship(
+    character_subclass: Mapped[Optional['CharacterSubclass']] = relationship(
         back_populates='combination_character_class_subclass',
     )
 

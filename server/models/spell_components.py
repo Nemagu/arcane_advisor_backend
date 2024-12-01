@@ -1,3 +1,7 @@
+from typing import TYPE_CHECKING
+
+from sqlalchemy.orm import Mapped, relationship
+
 from database import Base
 
 from .mixins import (
@@ -6,6 +10,9 @@ from .mixins import (
     TimestampMixin
 )
 
+if TYPE_CHECKING:
+    from .spells import Spell
+
 
 class SpellComponent(
     DescriptionMixin,
@@ -13,4 +20,7 @@ class SpellComponent(
     TimestampMixin,
     Base,
 ):
-    pass
+    spells: Mapped[list['Spell']] = relationship(
+        back_populates='components',
+        secondary='refspellcomponent',
+    )

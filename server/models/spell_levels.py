@@ -1,9 +1,14 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy import CheckConstraint
-from sqlalchemy.orm import Mapped, declared_attr, mapped_column
+from sqlalchemy.orm import Mapped, declared_attr, mapped_column, relationship
 
 from database import Base
 
 from .mixins import DescriptionMixin, TimestampMixin
+
+if TYPE_CHECKING:
+    from .spells import Spell
 
 
 class SpellLevel(
@@ -12,6 +17,8 @@ class SpellLevel(
     Base,
 ):
     level: Mapped[int] = mapped_column(unique=True)
+
+    spells: Mapped[list['Spell']] = relationship(back_populates='level')
 
     @declared_attr.directive
     def __table_args__(cls):

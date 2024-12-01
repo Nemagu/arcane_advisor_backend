@@ -14,13 +14,15 @@ class SpellDuration(Base):
     count: Mapped[int]
     unit_duration_id: Mapped[int] = mapped_column(
         ForeignKey(
-            'unitduration.id', ondelete='CASCADE',
+            'unitduration.id',
+            ondelete='CASCADE',
         ),
         primary_key=True,
     )
     spell_id: Mapped[int] = mapped_column(
         ForeignKey(
-            'spell.id', ondelete='CASCADE',
+            'spell.id',
+            ondelete='CASCADE',
         ),
         primary_key=True,
     )

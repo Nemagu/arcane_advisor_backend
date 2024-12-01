@@ -13,15 +13,11 @@ if TYPE_CHECKING:
 class SpellCastingTime(Base):
     count: Mapped[int]
     unit_duration_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            'unitduration.id', ondelete='CASCADE',
-        ),
+        ForeignKey('unitduration.id', ondelete='CASCADE'),
         primary_key=True,
     )
     spell_id: Mapped[int] = mapped_column(
-        ForeignKey(
-            'spell.id', ondelete='CASCADE',
-        ),
+        ForeignKey('spell.id', ondelete='CASCADE'),
         primary_key=True,
     )
 
