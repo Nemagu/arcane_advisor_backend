@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import CheckConstraint, ForeignKey
+from sqlalchemy import CheckConstraint, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, declared_attr, mapped_column, relationship
 
 from database import Base
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 class SpellDuration(Base):
     count: Mapped[int]
-    duration_id: Mapped[int] = mapped_column(
+    unit_duration_id: Mapped[int] = mapped_column(
         ForeignKey(
             'unitduration.id', ondelete='CASCADE',
         ),
@@ -20,16 +20,16 @@ class SpellDuration(Base):
     )
     spell_id: Mapped[int] = mapped_column(
         ForeignKey(
-            'unitduration.id', ondelete='CASCADE',
+            'spell.id', ondelete='CASCADE',
         ),
         primary_key=True,
     )
 
-    duration: Mapped['UnitDuration'] = relationship(
+    unit_duration: Mapped['UnitDuration'] = relationship(
         back_populates='spell_durations',
     )
     spell: Mapped['Spell'] = relationship(
-        back_populates='spell_durations',
+        back_populates='spell_duration',
     )
 
     @declared_attr.directive
@@ -38,5 +38,10 @@ class SpellDuration(Base):
             CheckConstraint(
                 'count >= 0',
                 name='min_value_spell_duration_count',
+            ),
+            UniqueConstraint(
+                'unit_duration_id',
+                'spell_id',
+                name='unique_unit_duration_spell',
             ),
         )
