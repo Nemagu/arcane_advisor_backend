@@ -20,4 +20,4 @@ class Source(
     TimestampMixin,
     Base,
 ):
-    spells: Mapped['Spell'] = relationship(back_populates='source')
+    spells: Mapped[list['Spell']] = relationship(back_populates='source')

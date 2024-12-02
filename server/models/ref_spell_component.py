@@ -20,6 +20,6 @@ class RefSpellComponent(Base):
             UniqueConstraint(
                 'spell_id',
                 'component_id',
-                name='unique_spell_component',
+                name='unique_components_for_spell',
             ),
         )

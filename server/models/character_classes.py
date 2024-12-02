@@ -11,7 +11,7 @@ from .mixins import (
 )
 
 if TYPE_CHECKING:
-    from .charcter_class_subclasses import CharacterClassSubclass
+    from .character_class_subclasses import CharacterClassSubclass
 
 
 class CharacterClass(
@@ -24,4 +24,5 @@ class CharacterClass(
         'CharacterClassSubclass'
     ] = relationship(
         back_populates='character_class',
+        secondary='characterclasssubclass',
     )

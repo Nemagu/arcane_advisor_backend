@@ -32,28 +32,16 @@ class Spell(
     ritual: Mapped[bool] = mapped_column(default=False)
     concetration: Mapped[bool] = mapped_column(default=False)
 
-    school_id: Mapped[int] = mapped_column(
-        ForeignKey('spellschool.id'),
-        primary_key=True,
-    )
+    school_id: Mapped[int] = mapped_column(ForeignKey('spellschool.id'))
     school: Mapped['SpellSchool'] = relationship(back_populates='spells')
 
-    level_id: Mapped[int] = mapped_column(
-        ForeignKey('spelllevel.id'),
-        primary_key=True,
-    )
+    level_id: Mapped[int] = mapped_column(ForeignKey('spelllevel.id'))
     level: Mapped['SpellLevel'] = relationship(back_populates='spells')
 
-    type_damage_id: Mapped[int] = mapped_column(
-        ForeignKey('typedamage.id'),
-        primary_key=True,
-    )
+    type_damage_id: Mapped[int] = mapped_column(ForeignKey('typedamage.id'))
     type_damage: Mapped['TypeDamage'] = relationship(back_populates='spells')
 
-    source_id: Mapped[int] = mapped_column(
-        ForeignKey('source.id'),
-        primary_key=True,
-    )
+    source_id: Mapped[int] = mapped_column(ForeignKey('source.id'))
     source: Mapped['Source'] = relationship(back_populates='spells')
 
     components: Mapped[list['SpellComponent']] = relationship(

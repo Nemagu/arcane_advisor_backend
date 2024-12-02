@@ -1,6 +1,6 @@
+from .character_class_subclasses import CharacterClassSubclass
 from .character_classes import CharacterClass
 from .character_subclasses import CharacterSubclass
-from .charcter_class_subclasses import CharacterClassSubclass
 from .ref_spell_component import RefSpellComponent
 from .sources import Source
 from .spell_casting_time import SpellCastingTime
