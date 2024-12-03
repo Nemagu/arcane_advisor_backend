@@ -5,11 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Windows: Current File",
+            "name": "Linux: FastAPI",
             "type": "debugpy",
             "request": "launch",
-            "program": "server\\main.py",
-            "console": "integratedTerminal"
+            "module": "uvicorn",
+            "args": [
+                "main:server",
+                "--reload"
+            ],
+            "python": "../venv/bin/python",
+            // "uvicorn": "venv/bin/uvicorn",
+            "jinja": true,
+            "cwd": "${workspaceFolder}/server"
+        },
+        {
+            "name": "Windows: FastAPI",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "server\\main:app",
+                "--reload"
+            ],
+            "jinja": true
         },
         {
             "name": "Linux: Current File",

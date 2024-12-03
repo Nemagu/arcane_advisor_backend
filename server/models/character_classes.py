@@ -11,7 +11,7 @@ from .mixins import (
 )
 
 if TYPE_CHECKING:
-    from .character_class_subclasses import CharacterClassSubclass
+    from .character_subclasses import CharacterSubclass
 
 
 class CharacterClass(
@@ -20,9 +20,6 @@ class CharacterClass(
     TimestampMixin,
     Base,
 ):
-    combination_character_class_subclass: Mapped[
-        'CharacterClassSubclass'
-    ] = relationship(
+    character_subclasses: Mapped[list['CharacterSubclass']] = relationship(
         back_populates='character_class',
-        secondary='characterclasssubclass',
     )

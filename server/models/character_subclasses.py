@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy.orm import Mapped, relationship
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
@@ -11,7 +12,7 @@ from .mixins import (
 )
 
 if TYPE_CHECKING:
-    from .character_class_subclasses import CharacterClassSubclass
+    from .character_classes import CharacterClass
 
 
 class CharacterSubclass(
@@ -20,9 +21,9 @@ class CharacterSubclass(
     TimestampMixin,
     Base,
 ):
-    character_class: Mapped[
-        'CharacterClassSubclass'
-    ] = relationship(
-        back_populates='combination_character_class_subclass',
-        secondary='characterclasssubclass',
+    character_class_id: Mapped[int] = mapped_column(
+        ForeignKey('characterclass.id', ondelete='CASCADE'),
+    )
+    character_class: Mapped['CharacterClass'] = relationship(
+        back_populates='character_subclasses',
     )

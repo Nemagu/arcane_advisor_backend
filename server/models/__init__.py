@@ -1,4 +1,3 @@
-from .character_class_subclasses import CharacterClassSubclass
 from .character_classes import CharacterClass
 from .character_subclasses import CharacterSubclass
 from .ref_spell_component import RefSpellComponent
@@ -15,7 +14,6 @@ from .unit_durations import UnitDuration
 __all__ = [
     'CharacterClass',
     'CharacterSubclass',
-    'CharacterClassSubclass',
     'RefSpellComponent',
     'Source',
     'SpellCastingTime',
