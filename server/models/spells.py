@@ -12,6 +12,8 @@ from .mixins import (
 )
 
 if TYPE_CHECKING:
+    from .character_classes import CharacterClass
+    from .character_subclasses import CharacterSubclass
     from .sources import Source
     from .spell_casting_time import SpellCastingTime
     from .spell_components import SpellComponent
@@ -44,6 +46,14 @@ class Spell(
     source_id: Mapped[int] = mapped_column(ForeignKey('source.id'))
     source: Mapped['Source'] = relationship(back_populates='spells')
 
+    character_classes: Mapped[list['CharacterClass']] = relationship(
+        back_populates='spells',
+        secondary='refspellcharacterclass',
+    )
+    character_subclasses: Mapped[list['CharacterSubclass']] = relationship(
+        back_populates='spells',
+        secondary='refspellcharactersubclass',
+    )
     components: Mapped[list['SpellComponent']] = relationship(
         back_populates='spells',
         secondary='refspellcomponent',

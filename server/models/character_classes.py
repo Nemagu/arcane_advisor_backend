@@ -12,6 +12,7 @@ from .mixins import (
 
 if TYPE_CHECKING:
     from .character_subclasses import CharacterSubclass
+    from .spells import Spell
 
 
 class CharacterClass(
@@ -22,4 +23,8 @@ class CharacterClass(
 ):
     character_subclasses: Mapped[list['CharacterSubclass']] = relationship(
         back_populates='character_class',
+    )
+    spells: Mapped[list['Spell']] = relationship(
+        back_populates='character_classes',
+        secondary='refspellcharacterclass',
     )

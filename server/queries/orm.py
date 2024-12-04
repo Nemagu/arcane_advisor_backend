@@ -2,7 +2,18 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from database import Base, async_engine, async_session_factory
-from models import CharacterClass, CharacterSubclass
+from models import (
+    CharacterClass,
+    CharacterSubclass,
+    Source,
+    Spell,
+    SpellCastingTime,
+    SpellComponent,
+    SpellLevel,
+    SpellSchool,
+    TypeDamage,
+    UnitDuration
+)
 
 
 class AsyncORM:
@@ -14,29 +25,77 @@ class AsyncORM:
 
     @staticmethod
     async def insert_data():
+        spell_test = Spell(
+            name='spell_test',
+            description='spell_test',
+            range=1,
+            next_level='description_next_level',
+        )
+        character_class_test = CharacterClass(
+            name='character_class_test',
+            description='character_class_test',
+        )
+        character_subclass_test = CharacterSubclass(
+            name='character_subclass_test',
+            description='character_subclass_test',
+        )
+        character_class_test.character_subclasses.append(
+            character_subclass_test,
+        )
+        spell_school_test = SpellSchool(
+            name='spell_school_test',
+            description='spell_school_test',
+        )
+        spell_level_test = SpellLevel(
+            level=1,
+            description='spell_level_test',
+        )
+        type_damage_test = TypeDamage(
+            name='type_damage_test',
+            description='type_damage_test',
+        )
+        source_test = Source(
+            name='source_test',
+            description='source_test',
+        )
+        component_test = SpellComponent(
+            name='component_test',
+            description='component_test',
+        )
+
         async with async_session_factory() as conn:
-            character_class1 = CharacterClass(
-                name='class1',
-                description='desc1',
-            )
-            character_class2 = CharacterClass(
-                name='class2',
-                description='desc2',
-            )
-            character_subclass1 = CharacterSubclass(
-                name='subclass1',
-                description='subclass1',
-            )
-            character_subclass2 = CharacterSubclass(
-                name='subclass2',
-                description='subclass2',
-            )
-            character_class1.character_subclasses.append(character_subclass1)
-            character_class2.character_subclasses.append(character_subclass2)
             conn.add_all([
-                character_class1,
-                character_class2,
+                character_class_test,
+                spell_school_test,
+                spell_level_test,
+                type_damage_test,
+                source_test,
+                component_test,
             ])
+            # print(spell_school_test.id, '\n\n\n\n\n')
+            await conn.flush()
+            # print(spell_school_test.id, '\n\n\n\n\n')
+            await conn.refresh(spell_school_test)
+            # print(spell_school_test.id, '\n\n\n\n\n')
+            await conn.refresh(spell_level_test)
+            await conn.refresh(type_damage_test)
+            await conn.refresh(source_test)
+
+            spell_test.school = spell_school_test
+            spell_test.level = spell_level_test
+            spell_test.type_damage = type_damage_test
+            spell_test.source = source_test
+            conn.add(spell_test)
+            await conn.flush()
+            await conn.refresh(spell_test)
+            await conn.refresh(character_class_test)
+            await conn.refresh(character_subclass_test)
+            await conn.refresh(component_test)
+            # spell_test.character_classes.append(character_class_test)
+            # spell_test.character_subclasses.append(character_subclass_test)
+            # spell_test.components.append(component_test)
+            character_class_test.spells.append(spell_test)
+            conn.add(character_class_test)
             await conn.commit()
 
     @staticmethod
