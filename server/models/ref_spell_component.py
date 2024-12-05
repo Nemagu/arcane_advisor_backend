@@ -7,11 +7,9 @@ from database import Base
 class RefSpellComponent(Base):
     spell_id: Mapped[int] = mapped_column(
         ForeignKey('spell.id', ondelete='CASCADE'),
-        primary_key=True,
     )
     component_id: Mapped[int] = mapped_column(
         ForeignKey('spellcomponent.id', ondelete='CASCADE'),
-        primary_key=True,
     )
 
     @declared_attr.directive

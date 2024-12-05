@@ -1,5 +1,5 @@
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
+from sqlalchemy import select, update
+from sqlalchemy.orm import joinedload, selectinload
 
 from database import Base, async_engine, async_session_factory
 from models import (
@@ -63,40 +63,16 @@ class AsyncORM:
             description='component_test',
         )
 
-        async with async_session_factory() as conn:
-            conn.add_all([
-                character_class_test,
-                spell_school_test,
-                spell_level_test,
-                type_damage_test,
-                source_test,
-                component_test,
-            ])
-            # print(spell_school_test.id, '\n\n\n\n\n')
-            await conn.flush()
-            # print(spell_school_test.id, '\n\n\n\n\n')
-            await conn.refresh(spell_school_test)
-            # print(spell_school_test.id, '\n\n\n\n\n')
-            await conn.refresh(spell_level_test)
-            await conn.refresh(type_damage_test)
-            await conn.refresh(source_test)
-
+        async with async_session_factory() as session:
             spell_test.school = spell_school_test
             spell_test.level = spell_level_test
             spell_test.type_damage = type_damage_test
             spell_test.source = source_test
-            conn.add(spell_test)
-            await conn.flush()
-            await conn.refresh(spell_test)
-            await conn.refresh(character_class_test)
-            await conn.refresh(character_subclass_test)
-            await conn.refresh(component_test)
-            # spell_test.character_classes.append(character_class_test)
-            # spell_test.character_subclasses.append(character_subclass_test)
-            # spell_test.components.append(component_test)
-            character_class_test.spells.append(spell_test)
-            conn.add(character_class_test)
-            await conn.commit()
+            spell_test.character_classes.append(character_class_test)
+            spell_test.character_subclasses.append(character_subclass_test)
+            spell_test.components.append(component_test)
+            session.add(spell_test)
+            await session.commit()
 
     @staticmethod
     async def get_all_character_classes():
@@ -109,12 +85,10 @@ class AsyncORM:
     @staticmethod
     async def get_all_character_classes_all_ref():
         async with async_session_factory() as conn:
-            query = (
+            character_classes = await conn.scalars(
                 select(CharacterClass)
                 .options(selectinload(
                     CharacterClass.character_subclasses,
                 ))
             )
-            res = await conn.execute(query)
-            character_classes = res.scalars().all()
-            return character_classes
+            return character_classes.all()

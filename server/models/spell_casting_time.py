@@ -14,11 +14,9 @@ class SpellCastingTime(Base):
     count: Mapped[int]
     unit_duration_id: Mapped[int] = mapped_column(
         ForeignKey('unitduration.id', ondelete='CASCADE'),
-        primary_key=True,
     )
     spell_id: Mapped[int] = mapped_column(
         ForeignKey('spell.id', ondelete='CASCADE'),
-        primary_key=True,
     )
 
     unit_duration: Mapped['UnitDuration'] = relationship(
