@@ -1,4 +1,4 @@
-import asyncio
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
@@ -6,13 +6,12 @@ from queries import AsyncORM
 from routers import character_classes
 
 
-async def create_db():
+@asynccontextmanager
+async def lifespan(server: FastAPI):
     await AsyncORM.create_tables()
     await AsyncORM.insert_data()
+    yield
 
 
-server = FastAPI()
+server = FastAPI(lifespan=lifespan)
 server.include_router(character_classes.router)
-
-if __name__ == '__main__':
-    asyncio.run(create_db())

@@ -22,8 +22,8 @@ class DatabaseHelper:
         )
         self._session_factory = async_sessionmaker(
             bind=self._engine,
-            # autoflush=False,
-            # expire_on_commit=False,
+            autoflush=False,
+            expire_on_commit=False,
         )
 
     @property

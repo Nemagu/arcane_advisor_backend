@@ -24,10 +24,11 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "server\\main:app",
+                "main:server",
                 "--reload"
             ],
-            "jinja": true
+            "jinja": true,
+            "cwd": "${workspaceFolder}\\server"
         },
         {
             "name": "Linux: Current File",
