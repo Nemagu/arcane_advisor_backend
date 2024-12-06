@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import (
     DeclarativeBase,
@@ -6,7 +8,38 @@ from sqlalchemy.orm import (
     mapped_column
 )
 
+if TYPE_CHECKING:
+    from sqlalchemy.ext.asyncio import AsyncEngine
+
 from config import settings
+
+
+class DatabaseHelper:
+    def __init__(self, url: str, echo: bool = False):
+        self._engine = create_async_engine(
+            url=url,
+            echo=echo,
+        )
+        self._session_factory = async_sessionmaker(
+            bind=self._engine,
+            # autoflush=False,
+            # expire_on_commit=False,
+        )
+
+    @property
+    def engine(self) -> 'AsyncEngine':
+        return self._engine
+
+    @property
+    def session(self):
+        return self._session_factory()
+
+
+db_helper = DatabaseHelper(
+    url=settings.DATABASE_URL_async,
+    echo=settings.db_echo,
+)
+
 
 async_engine = create_async_engine(
     url=settings.DATABASE_URL_async,

@@ -1,7 +1,7 @@
 from sqlalchemy import select, update
 from sqlalchemy.orm import joinedload, selectinload
 
-from database import Base, async_engine, async_session_factory
+from database import Base, async_engine, async_session_factory, db_helper
 from models import (
     CharacterClass,
     CharacterSubclass,
@@ -19,7 +19,7 @@ from models import (
 class AsyncORM:
     @staticmethod
     async def create_tables():
-        async with async_engine.begin() as conn:
+        async with db_helper.engine.begin() as conn:
             await conn.run_sync(Base.metadata.drop_all)
             await conn.run_sync(Base.metadata.create_all)
 
@@ -63,7 +63,7 @@ class AsyncORM:
             description='component_test',
         )
 
-        async with async_session_factory() as session:
+        async with db_helper.session as session:
             spell_test.school = spell_school_test
             spell_test.level = spell_level_test
             spell_test.type_damage = type_damage_test
