@@ -8,8 +8,6 @@ from routers import character_classes
 
 @asynccontextmanager
 async def lifespan(server: FastAPI):
-    await AsyncORM.create_tables()
-    await AsyncORM.insert_data()
     yield
 
 
